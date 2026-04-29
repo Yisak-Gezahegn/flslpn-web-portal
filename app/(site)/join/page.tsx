@@ -45,13 +45,11 @@ export default function JoinPage() {
       >
         <div className="max-w-2xl mx-auto">
           <ScrollReveal>
-            <h2
-              id="join-form-heading"
-              className="font-serif text-2xl font-bold text-navy dark:text-white mb-2"
-            >
+            <h2 id="join-form-heading" className="text-2xl font-bold mb-2"
+              style={{ color: "var(--text-primary)", fontFamily: "var(--font-playfair, Georgia, serif)" }}>
               Membership Application
             </h2>
-            <p className="font-sans text-navy/60 dark:text-white/60 mb-8 text-sm">
+            <p className="mb-8 text-sm" style={{ color: "var(--text-muted)" }}>
               Fields marked with <span className="text-red-500" aria-hidden="true">*</span> are required.
             </p>
           </ScrollReveal>

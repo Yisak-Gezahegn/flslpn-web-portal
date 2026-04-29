@@ -5,225 +5,138 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { joinFormSchema, type JoinFormInput } from "@/lib/schemas";
 
-// ─── Shared field styles ──────────────────────────────────────────────────────
+// ─── Styles using CSS variables (work in both light and dark mode) ────────────
 
-const inputClass = `
-  w-full px-4 py-3 rounded-lg border
-  bg-white dark:bg-navy-light
-  text-navy dark:text-white
-  placeholder:text-navy/40 dark:placeholder:text-white/30
-  border-navy/20 dark:border-white/20
-  focus:outline-none focus:ring-2 focus:ring-gold focus:border-transparent
-  transition-colors duration-150
-  font-sans text-sm
-`;
+const fieldStyle: React.CSSProperties = {
+  backgroundColor: "var(--bg-card)",
+  color: "var(--text-primary)",
+  border: "1px solid var(--border-subtle)",
+};
 
-const errorClass = "mt-1 text-sm text-red-500 dark:text-red-400 font-sans";
-const labelClass = "block text-sm font-medium text-navy dark:text-white mb-1 font-sans";
+const labelStyle: React.CSSProperties = {
+  color: "var(--text-primary)",
+  display: "block",
+  fontSize: "0.875rem",
+  fontWeight: 500,
+  marginBottom: "0.25rem",
+};
 
-// ─── Areas of interest options ────────────────────────────────────────────────
+const optionalStyle: React.CSSProperties = {
+  color: "var(--text-muted)",
+  fontWeight: 400,
+};
+
+const fieldClass = "w-full px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500 transition-colors duration-150 font-sans text-sm";
 
 const AREAS_OF_INTEREST = [
-  "Human Rights Law",
-  "Family Law",
-  "Criminal Law",
-  "Corporate Law",
-  "Environmental Law",
-  "International Law",
-  "Legal Aid & Pro Bono",
-  "Research & Academia",
-  "Mentorship",
+  "Human Rights Law", "Family Law", "Criminal Law", "Corporate Law",
+  "Environmental Law", "International Law", "Legal Aid & Pro Bono",
+  "Research & Academia", "Mentorship",
 ];
 
-// ─── Component ────────────────────────────────────────────────────────────────
-
-/**
- * JoinForm — membership application form.
- *
- * Uses react-hook-form + zod for validation.
- * Inline validation errors adjacent to invalid fields.
- * Submit button disabled + loading indicator during submission.
- * Success confirmation on success; descriptive error on failure.
- *
- * Requirements: 10.1 – 10.7
- */
 export function JoinForm() {
-  const [submitStatus, setSubmitStatus] = useState<
-    "idle" | "submitting" | "success" | "error"
-  >("idle");
-  const [serverError, setServerError] = useState<string>("");
+  const [submitStatus, setSubmitStatus] = useState<"idle"|"submitting"|"success"|"error">("idle");
+  const [serverError, setServerError] = useState("");
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    reset,
-  } = useForm<JoinFormInput>({
+  const { register, handleSubmit, formState: { errors }, reset } = useForm<JoinFormInput>({
     resolver: zodResolver(joinFormSchema),
   });
 
   async function onSubmit(data: JoinFormInput) {
     setSubmitStatus("submitting");
     setServerError("");
-
     try {
-      const response = await fetch("/api/join", {
+      const res = await fetch("/api/join", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
       });
-
-      if (response.ok) {
-        setSubmitStatus("success");
-        reset();
-      } else {
-        const json = await response.json().catch(() => ({}));
-        setServerError(
-          json.error ?? "Something went wrong. Please try again."
-        );
+      if (res.ok) { setSubmitStatus("success"); reset(); }
+      else {
+        const json = await res.json().catch(() => ({}));
+        setServerError(json.error ?? "Something went wrong. Please try again.");
         setSubmitStatus("error");
       }
     } catch {
-      setServerError(
-        "Unable to submit. Please check your connection and try again."
-      );
+      setServerError("Unable to submit. Please check your connection and try again.");
       setSubmitStatus("error");
     }
   }
 
-  // ── Success state ───────────────────────────────────────────────────────────
   if (submitStatus === "success") {
     return (
-      <div
-        role="alert"
-        className="rounded-2xl bg-gold/10 border border-gold/30 p-8 text-center"
-      >
-        <div className="text-4xl mb-4" aria-hidden="true">🎉</div>
-        <h2 className="font-serif text-2xl font-bold text-navy dark:text-white mb-2">
+      <div role="alert" className="rounded-2xl p-8 text-center"
+        style={{ backgroundColor: "rgba(201,168,76,0.1)", border: "1px solid rgba(201,168,76,0.3)" }}>
+        <div className="text-4xl mb-4">🎉</div>
+        <h2 className="text-2xl font-bold mb-2" style={{ color: "var(--text-primary)", fontFamily: "var(--font-playfair, Georgia, serif)" }}>
           Application Received!
         </h2>
-        <p className="font-sans text-navy/70 dark:text-white/70">
-          Thank you for applying to join FLSLPN. We&apos;ll be in touch soon.
-        </p>
-        <button
-          type="button"
-          onClick={() => setSubmitStatus("idle")}
-          className="mt-6 text-sm text-gold hover:text-gold-dark underline font-sans transition-colors"
-        >
+        <p style={{ color: "var(--text-secondary)" }}>Thank you for applying to join FLSLPN. We&apos;ll be in touch soon.</p>
+        <button type="button" onClick={() => setSubmitStatus("idle")}
+          className="mt-6 text-sm underline transition-colors" style={{ color: "#C9A84C" }}>
           Submit another application
         </button>
       </div>
     );
   }
 
-  // ── Form ────────────────────────────────────────────────────────────────────
   return (
-    <form
-      onSubmit={handleSubmit(onSubmit)}
-      noValidate
-      aria-label="Membership application form"
-      className="flex flex-col gap-6"
-    >
+    <form onSubmit={handleSubmit(onSubmit)} noValidate aria-label="Membership application form" className="flex flex-col gap-6">
+
       {/* Full Name */}
       <div>
-        <label htmlFor="fullName" className={labelClass}>
-          Full Name <span className="text-red-500" aria-hidden="true">*</span>
+        <label htmlFor="fullName" style={labelStyle}>
+          Full Name <span style={{ color: "#ef4444" }} aria-hidden="true">*</span>
         </label>
-        <input
-          id="fullName"
-          type="text"
-          autoComplete="name"
-          placeholder="Your full name"
-          aria-required="true"
-          aria-describedby={errors.fullName ? "fullName-error" : undefined}
-          className={inputClass}
-          {...register("fullName")}
-        />
-        {errors.fullName && (
-          <p id="fullName-error" role="alert" className={errorClass}>
-            {errors.fullName.message}
-          </p>
-        )}
+        <input id="fullName" type="text" autoComplete="name" placeholder="Your full name"
+          aria-required="true" className={fieldClass} style={fieldStyle} {...register("fullName")} />
+        {errors.fullName && <p role="alert" className="mt-1 text-sm text-red-500">{errors.fullName.message}</p>}
       </div>
 
       {/* Email */}
       <div>
-        <label htmlFor="email" className={labelClass}>
-          Email Address <span className="text-red-500" aria-hidden="true">*</span>
+        <label htmlFor="email" style={labelStyle}>
+          Email Address <span style={{ color: "#ef4444" }} aria-hidden="true">*</span>
         </label>
-        <input
-          id="email"
-          type="email"
-          autoComplete="email"
-          placeholder="you@example.com"
-          aria-required="true"
-          aria-describedby={errors.email ? "email-error" : undefined}
-          className={inputClass}
-          {...register("email")}
-        />
-        {errors.email && (
-          <p id="email-error" role="alert" className={errorClass}>
-            {errors.email.message}
-          </p>
-        )}
+        <input id="email" type="email" autoComplete="email" placeholder="you@example.com"
+          aria-required="true" className={fieldClass} style={fieldStyle} {...register("email")} />
+        {errors.email && <p role="alert" className="mt-1 text-sm text-red-500">{errors.email.message}</p>}
       </div>
 
-      {/* Phone (optional) */}
+      {/* Phone */}
       <div>
-        <label htmlFor="phone" className={labelClass}>
-          Phone Number <span className="text-navy/40 dark:text-white/40 font-normal">(optional)</span>
+        <label htmlFor="phone" style={labelStyle}>
+          Phone Number <span style={optionalStyle}>(optional)</span>
         </label>
-        <input
-          id="phone"
-          type="tel"
-          autoComplete="tel"
-          placeholder="+251 9XX XXX XXX"
-          className={inputClass}
-          {...register("phone")}
-        />
+        <input id="phone" type="tel" autoComplete="tel" placeholder="+251 9XX XXX XXX"
+          className={fieldClass} style={fieldStyle} {...register("phone")} />
       </div>
 
-      {/* University ID (optional) */}
+      {/* University ID */}
       <div>
-        <label htmlFor="universityId" className={labelClass}>
-          University ID <span className="text-navy/40 dark:text-white/40 font-normal">(optional)</span>
+        <label htmlFor="universityId" style={labelStyle}>
+          University ID <span style={optionalStyle}>(optional)</span>
         </label>
-        <input
-          id="universityId"
-          type="text"
-          placeholder="e.g. HU/LAW/123/14"
-          className={inputClass}
-          {...register("universityId" as any)}
-        />
+        <input id="universityId" type="text" placeholder="e.g. HU/LAW/123/14"
+          className={fieldClass} style={fieldStyle} {...register("universityId" as any)} />
       </div>
 
-      {/* Location (optional) */}
+      {/* Location */}
       <div>
-        <label htmlFor="location" className={labelClass}>
-          Location / Department <span className="text-navy/40 dark:text-white/40 font-normal">(optional)</span>
+        <label htmlFor="location" style={labelStyle}>
+          Location / Department <span style={optionalStyle}>(optional)</span>
         </label>
-        <input
-          id="location"
-          type="text"
-          placeholder="e.g. Haramaya University, College of Law"
-          className={inputClass}
-          {...register("location" as any)}
-        />
+        <input id="location" type="text" placeholder="e.g. Haramaya University, College of Law"
+          className={fieldClass} style={fieldStyle} {...register("location" as any)} />
       </div>
 
       {/* Year of Study */}
       <div>
-        <label htmlFor="yearOfStudy" className={labelClass}>
-          Year of Study <span className="text-red-500" aria-hidden="true">*</span>
+        <label htmlFor="yearOfStudy" style={labelStyle}>
+          Year of Study <span style={{ color: "#ef4444" }} aria-hidden="true">*</span>
         </label>
-        <select
-          id="yearOfStudy"
-          aria-required="true"
-          aria-describedby={errors.yearOfStudy ? "yearOfStudy-error" : undefined}
-          className={inputClass}
-          {...register("yearOfStudy")}
-          defaultValue=""
-        >
+        <select id="yearOfStudy" aria-required="true" className={fieldClass} style={fieldStyle}
+          {...register("yearOfStudy")} defaultValue="">
           <option value="" disabled>Select your year</option>
           <option value="1st">1st Year</option>
           <option value="2nd">2nd Year</option>
@@ -232,80 +145,50 @@ export function JoinForm() {
           <option value="5th">5th Year</option>
           <option value="Graduate">Graduate</option>
         </select>
-        {errors.yearOfStudy && (
-          <p id="yearOfStudy-error" role="alert" className={errorClass}>
-            {errors.yearOfStudy.message}
-          </p>
-        )}
+        {errors.yearOfStudy && <p role="alert" className="mt-1 text-sm text-red-500">{errors.yearOfStudy.message}</p>}
       </div>
 
-      {/* Areas of Interest (optional checkboxes) */}
+      {/* Areas of Interest */}
       <fieldset>
-        <legend className={labelClass}>
-          Areas of Interest <span className="text-navy/40 dark:text-white/40 font-normal">(optional)</span>
+        <legend style={labelStyle}>
+          Areas of Interest <span style={optionalStyle}>(optional)</span>
         </legend>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-2">
           {AREAS_OF_INTEREST.map((area) => (
-            <label
-              key={area}
-              className="flex items-center gap-2 cursor-pointer font-sans text-sm text-navy/80 dark:text-white/80 hover:text-navy dark:hover:text-white transition-colors"
-            >
-              <input
-                type="checkbox"
-                value={area}
-                className="w-4 h-4 rounded border-navy/30 text-gold focus:ring-gold focus:ring-offset-0"
-                {...register("areasOfInterest")}
-              />
+            <label key={area} className="flex items-center gap-2 cursor-pointer font-sans text-sm transition-colors"
+              style={{ color: "var(--text-secondary)" }}>
+              <input type="checkbox" value={area}
+                className="w-4 h-4 rounded" style={{ accentColor: "#C9A84C" }}
+                {...register("areasOfInterest")} />
               {area}
             </label>
           ))}
         </div>
       </fieldset>
 
-      {/* Message (optional) */}
+      {/* Message */}
       <div>
-        <label htmlFor="message" className={labelClass}>
-          Message <span className="text-navy/40 dark:text-white/40 font-normal">(optional)</span>
+        <label htmlFor="message" style={labelStyle}>
+          Message <span style={optionalStyle}>(optional)</span>
         </label>
-        <textarea
-          id="message"
-          rows={4}
-          placeholder="Tell us why you want to join FLSLPN..."
-          className={`${inputClass} resize-y min-h-[100px]`}
-          {...register("message")}
-        />
+        <textarea id="message" rows={4} placeholder="Tell us why you want to join FLSLPN..."
+          className={`${fieldClass} resize-y min-h-[100px]`} style={fieldStyle}
+          {...register("message")} />
       </div>
 
       {/* Server error */}
       {submitStatus === "error" && serverError && (
-        <div role="alert" className="rounded-lg bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 px-4 py-3">
-          <p className="text-sm text-red-600 dark:text-red-400 font-sans">{serverError}</p>
+        <div role="alert" className="rounded-lg px-4 py-3"
+          style={{ backgroundColor: "rgba(239,68,68,0.08)", border: "1px solid rgba(239,68,68,0.3)" }}>
+          <p className="text-sm text-red-500">{serverError}</p>
         </div>
       )}
 
       {/* Submit */}
-      <button
-        type="submit"
-        disabled={submitStatus === "submitting"}
-        aria-disabled={submitStatus === "submitting"}
-        className="
-          inline-flex items-center justify-center gap-2
-          px-8 py-4 rounded-full
-          bg-gold hover:bg-gold-light disabled:bg-gold/50
-          text-navy font-semibold font-sans text-base
-          transition-colors duration-200
-          focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2
-          disabled:cursor-not-allowed
-        "
-      >
-        {submitStatus === "submitting" ? (
-          <>
-            <SpinnerIcon />
-            Submitting…
-          </>
-        ) : (
-          "Submit Application"
-        )}
+      <button type="submit" disabled={submitStatus === "submitting"}
+        className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full font-semibold font-sans text-base transition-colors duration-200 disabled:cursor-not-allowed disabled:opacity-60"
+        style={{ backgroundColor: "#C9A84C", color: "#0A1628" }}>
+        {submitStatus === "submitting" ? (<><SpinnerIcon />Submitting…</>) : "Submit Application"}
       </button>
     </form>
   );
@@ -313,19 +196,8 @@ export function JoinForm() {
 
 function SpinnerIcon() {
   return (
-    <svg
-      className="animate-spin"
-      xmlns="http://www.w3.org/2000/svg"
-      width="18"
-      height="18"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      aria-hidden="true"
-    >
+    <svg className="animate-spin" xmlns="http://www.w3.org/2000/svg" width="18" height="18"
+      viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
       <path d="M21 12a9 9 0 1 1-6.219-8.56" />
     </svg>
   );

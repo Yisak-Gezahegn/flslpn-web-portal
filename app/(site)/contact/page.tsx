@@ -67,13 +67,8 @@ export default function ContactPage() {
                 </p>
                 <a
                   href={`mailto:${CONTACT_EMAIL}`}
-                  className="
-                    font-sans text-base text-navy dark:text-white
-                    hover:text-gold dark:hover:text-gold
-                    transition-colors duration-150
-                    focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold rounded
-                    break-all
-                  "
+                  className="font-sans text-base hover:opacity-70 transition-opacity duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold rounded break-all"
+                  style={{ color: "var(--text-primary)" }}
                 >
                   {CONTACT_EMAIL}
                 </a>
@@ -84,7 +79,7 @@ export default function ContactPage() {
                 <p className="text-xs font-semibold uppercase tracking-widest text-gold mb-2">
                   Address
                 </p>
-                <address className="font-sans text-base text-navy/80 dark:text-white/80 not-italic leading-relaxed">
+                <address className="font-sans text-base not-italic leading-relaxed" style={{ color: "var(--text-secondary)" }}>
                   {CONTACT_ADDRESS}
                 </address>
               </div>
