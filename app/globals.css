@@ -2,70 +2,60 @@
 
 /* ─── Tailwind v4: register custom theme tokens ──────────────────────────── */
 @theme {
-  /* Brand colors — makes bg-navy, text-gold, etc. work as Tailwind classes */
   --color-navy:         #0A1628;
   --color-navy-light:   #1A2E4A;
   --color-navy-dark:    #060E1A;
   --color-gold:         #C9A84C;
   --color-gold-light:   #E2C97E;
   --color-gold-dark:    #A07830;
-
-  /* Font families */
   --font-sans:  "Inter", system-ui, sans-serif;
   --font-serif: "Playfair Display", Georgia, serif;
 }
 
-/* ─── Light-mode defaults ────────────────────────────────────────────────── */
+/* ─── Light mode ─────────────────────────────────────────────────────────── */
 :root {
+  --bg-page:        #f8f7f4;
+  --bg-card:        #ffffff;
+  --bg-section-alt: #f0ede8;
+  --text-primary:   #0A1628;
+  --text-secondary: rgba(10,22,40,0.7);
+  --text-muted:     rgba(10,22,40,0.45);
+  --border-subtle:  rgba(10,22,40,0.08);
   color-scheme: light;
 }
 
-/* ─── Dark-mode overrides ────────────────────────────────────────────────── */
+/* ─── Dark mode ──────────────────────────────────────────────────────────── */
 .dark {
+  --bg-page:        #0A1628;
+  --bg-card:        #1A2E4A;
+  --bg-section-alt: #0d1e35;
+  --text-primary:   #f5f5f5;
+  --text-secondary: rgba(245,245,245,0.75);
+  --text-muted:     rgba(245,245,245,0.45);
+  --border-subtle:  rgba(255,255,255,0.08);
   color-scheme: dark;
 }
 
-/* ─── Base body styles ───────────────────────────────────────────────────── */
-html {
-  scroll-behavior: smooth;
-}
+/* ─── Base ───────────────────────────────────────────────────────────────── */
+html { scroll-behavior: smooth; }
 
-/* Light mode body */
 body {
-  background-color: #ffffff;
-  color: #0A1628;
+  background-color: var(--bg-page);
+  color: var(--text-primary);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Dark mode body */
-.dark body {
-  background-color: #0A1628;
-  color: #f5f5f5;
-}
+/* ─── Utility classes using CSS vars ─────────────────────────────────────── */
+.page-bg    { background-color: var(--bg-page); }
+.card-bg    { background-color: var(--bg-card); }
+.alt-bg     { background-color: var(--bg-section-alt); }
+.text-main  { color: var(--text-primary); }
+.text-sub   { color: var(--text-secondary); }
+.text-dim   { color: var(--text-muted); }
+.border-sub { border-color: var(--border-subtle); }
 
-/* ─── Light mode: page sections ──────────────────────────────────────────── */
-/* Ensure white sections have dark text */
-:not(.dark) .bg-white,
-:not(.dark) [class*="bg-white"] {
-  color: #0A1628;
-}
-
-:not(.dark) [class*="bg-gray"] {
-  color: #0A1628;
-}
-
-/* ─── Portable text in light mode ────────────────────────────────────────── */
-:not(.dark) .portable-text p,
-:not(.dark) .portable-text h1,
-:not(.dark) .portable-text h2,
-:not(.dark) .portable-text h3,
-:not(.dark) .portable-text h4,
-:not(.dark) .portable-text li {
-  color: #0A1628;
-}
-
-/* ─── Focus-visible ring ─────────────────────────────────────────────────── */
+/* ─── Focus-visible ──────────────────────────────────────────────────────── */
 :focus-visible {
   outline: 2px solid #C9A84C;
   outline-offset: 2px;
@@ -86,9 +76,7 @@ body {
   text-decoration: none;
   transition: top 0.15s ease;
 }
-.skip-to-content:focus {
-  top: 0;
-}
+.skip-to-content:focus { top: 0; }
 
 /* ─── Screen-reader only ─────────────────────────────────────────────────── */
 .sr-only {
@@ -98,7 +86,7 @@ body {
   padding: 0;
   margin: -1px;
   overflow: hidden;
-  clip: rect(0, 0, 0, 0);
+  clip: rect(0,0,0,0);
   white-space: nowrap;
   border-width: 0;
 }
@@ -107,3 +95,29 @@ body {
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background-color: #A07830; border-radius: 3px; }
+
+/* ─── Portable text inherits theme ──────────────────────────────────────── */
+.portable-text p,
+.portable-text li,
+.portable-text h1,
+.portable-text h2,
+.portable-text h3 {
+  color: var(--text-primary);
+}
+
+/* ─── Form inputs dark mode ──────────────────────────────────────────────── */
+input, select, textarea {
+  background-color: var(--bg-card);
+  color: var(--text-primary);
+  border-color: var(--border-subtle);
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: var(--text-muted);
+}
+
+/* ─── MissionSection dark mode ───────────────────────────────────────────── */
+.mission-section {
+  background-color: var(--bg-page);
+}

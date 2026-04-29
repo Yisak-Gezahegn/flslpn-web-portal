@@ -26,7 +26,7 @@ export default async function EventDetailPage({ params }: PageProps) {
   if (!event) notFound();
 
   return (
-    <div style={{ backgroundColor: "#f8f7f4" }} className="min-h-screen">
+    <div className="page-bg min-h-screen">
       <EventDetailClient event={event} />
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pb-12">
         <div className="pt-8" style={{ borderTop: "1px solid rgba(201,168,76,0.2)" }}>

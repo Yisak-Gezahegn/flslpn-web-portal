@@ -25,8 +25,8 @@ function TeamMemberCard({ member }: { member: StaticTeamMember }) {
 
   return (
     <article
-      className="flex flex-col rounded-2xl overflow-hidden transition-transform duration-300 hover:-translate-y-1"
-      style={{ backgroundColor: "#ffffff", boxShadow: "0 4px 20px rgba(10,22,40,0.08)", border: "1px solid rgba(10,22,40,0.05)" }}
+      className="flex flex-col rounded-2xl overflow-hidden transition-transform duration-300 hover:-translate-y-1 card-bg"
+      style={{ boxShadow: "0 4px 20px rgba(10,22,40,0.08)", border: "1px solid var(--border-subtle)" }}
     >
       {/* Photo / Avatar */}
       <div
@@ -90,7 +90,7 @@ function TeamMemberCard({ member }: { member: StaticTeamMember }) {
 
       {/* Info */}
       <div className="p-5 flex flex-col gap-2 flex-1">
-        <h3 style={{ color: "#0A1628", fontFamily: "var(--font-playfair, Georgia, serif)" }}
+        <h3 style={{ color: "var(--text-primary)", fontFamily: "var(--font-playfair, Georgia, serif)" }}
           className="text-base font-bold leading-snug">
           {member.name}
         </h3>
@@ -120,7 +120,7 @@ function TeamMemberCard({ member }: { member: StaticTeamMember }) {
 
 export default function TeamPage() {
   return (
-    <div style={{ backgroundColor: "#f8f7f4" }} className="min-h-screen">
+    <div className="page-bg min-h-screen">
 
       {/* Hero */}
       <section style={{ backgroundColor: "#0A1628" }} className="py-20 px-4 sm:px-6 lg:px-8 text-center">

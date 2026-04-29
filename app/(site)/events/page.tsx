@@ -15,7 +15,7 @@ export default function EventsPage() {
   const rest = STATIC_EVENTS.slice(1);
 
   return (
-    <div style={{ backgroundColor: "#f8f7f4" }} className="min-h-screen">
+    <div className="page-bg min-h-screen">
 
       {/* ── Hero ─────────────────────────────────────────────────────────── */}
       <section style={{ backgroundColor: "#0A1628" }} className="py-20 px-4 sm:px-6 lg:px-8 text-center">
@@ -82,8 +82,8 @@ export default function EventsPage() {
           {rest.map((event, i) => (
             <ScrollReveal key={event.id} delay={i * 0.05}>
               <Link href={`/events/${event.slug}`} className="group block h-full">
-                <article className="flex flex-col rounded-2xl overflow-hidden h-full transition-transform duration-300 group-hover:-translate-y-2"
-                  style={{ backgroundColor: "#ffffff", boxShadow: "0 4px 20px rgba(10,22,40,0.08)", border: "1px solid rgba(10,22,40,0.05)" }}>
+                <article className="flex flex-col rounded-2xl overflow-hidden h-full transition-transform duration-300 group-hover:-translate-y-2 card-bg"
+                  style={{ boxShadow: "0 4px 20px rgba(10,22,40,0.08)", border: "1px solid var(--border-subtle)" }}>
 
                   {/* Cover */}
                   <div className="relative overflow-hidden" style={{ height: "220px" }}>
@@ -111,11 +111,11 @@ export default function EventsPage() {
                     <time style={{ color: "#C9A84C" }} className="text-xs font-semibold uppercase tracking-widest">
                       {formatDate(event.date)}
                     </time>
-                    <h3 style={{ color: "#0A1628", fontFamily: "var(--font-playfair, Georgia, serif)" }}
+                    <h3 style={{ color: "var(--text-primary)", fontFamily: "var(--font-playfair, Georgia, serif)" }}
                       className="text-base font-bold leading-snug line-clamp-2 group-hover:opacity-80 transition-opacity">
                       {event.title}
                     </h3>
-                    <p style={{ color: "rgba(10,22,40,0.6)" }} className="text-sm leading-relaxed line-clamp-2 flex-1">
+                    <p style={{ color: "var(--text-secondary)" }} className="text-sm leading-relaxed line-clamp-2 flex-1">
                       {event.description}
                     </p>
 

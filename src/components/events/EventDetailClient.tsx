@@ -47,7 +47,7 @@ export function EventDetailClient({ event }: EventDetailClientProps) {
 
       {/* Content */}
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <p style={{ color: "rgba(10,22,40,0.8)", lineHeight: "1.9" }} className="text-lg max-w-3xl mb-12">
+        <p style={{ color: "var(--text-secondary)", lineHeight: "1.9" }} className="text-lg max-w-3xl mb-12">
           {event.description}
         </p>
 
@@ -56,10 +56,10 @@ export function EventDetailClient({ event }: EventDetailClientProps) {
           <div>
             <div className="flex items-center gap-4 mb-6">
               <div className="w-8 h-1 rounded" style={{ backgroundColor: "#C9A84C" }} />
-              <h2 style={{ color: "#0A1628", fontFamily: "var(--font-playfair, Georgia, serif)" }} className="text-2xl font-bold">
+              <h2 style={{ color: "var(--text-primary)", fontFamily: "var(--font-playfair, Georgia, serif)" }} className="text-2xl font-bold">
                 Photo Gallery
               </h2>
-              <span style={{ color: "rgba(10,22,40,0.4)" }} className="text-sm">{galleryImages.length} photos</span>
+              <span style={{ color: "var(--text-muted)" }} className="text-sm">{galleryImages.length} photos</span>
             </div>
 
             {/* Masonry grid — clickable */}

@@ -28,7 +28,7 @@ const SOCIAL_LINKS = [
  */
 export default function ContactPage() {
   return (
-    <div className="bg-white dark:bg-navy min-h-screen">
+    <div className="page-bg min-h-screen">
 
       {/* Page hero */}
       <section

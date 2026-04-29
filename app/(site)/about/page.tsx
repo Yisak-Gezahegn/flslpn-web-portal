@@ -1,151 +1,199 @@
-import type { Metadata } from "next";
-import { sanityFetch } from "@/lib/sanity/client";
-import {
-  SITE_SETTINGS_QUERY,
-  ACTIVE_ANNOUNCEMENTS_QUERY,
-} from "@/lib/sanity/queries";
-import type { SiteSettings, Announcement } from "@/types";
-import { PortableTextRenderer } from "@/components/ui/PortableTextRenderer";
+"use client";
+
+import { useState } from "react";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
-import { formatDate } from "@/lib/utils";
 
-// ─── ISR — revalidate every 5 minutes ────────────────────────────────────────
-export const revalidate = 300;
+const MISSION = "To empower female law students and young legal professionals through mentorship, leadership, advocacy, and professional development.";
 
-// ─── Metadata ─────────────────────────────────────────────────────────────────
-export const metadata: Metadata = {
-  title: "About — FLSLPN",
-  description:
-    "Learn about the Female Law Students & Legal Professionals Network at Haramaya University — our mission, values, and announcements.",
-};
+const VISION = "To build a strong community of confident and skilled women leaders in the legal profession who promote justice, equality, and positive social impact.";
 
-// ─── Page ─────────────────────────────────────────────────────────────────────
+const GOALS = [
+  "Enhance the academic and professional skills of female law students",
+  "Raise awareness of women's legal rights and gender equality",
+  "Promote mentorship and networking between students and legal professionals",
+  "Foster leadership, advocacy, and professional growth among members",
+];
 
-/**
- * About page — React Server Component with ISR (revalidate: 300s).
- *
- * Renders:
- * - Full aboutText rich text from SiteSettings
- * - missionStatement as a styled pull-quote banner
- * - Active Announcements ordered by publishedAt descending
- *
- * Requirements: 7.1, 7.2, 7.3, 7.4
- */
-export default async function AboutPage() {
-  const [siteSettings, announcements] = await Promise.all([
-    sanityFetch<SiteSettings>(SITE_SETTINGS_QUERY).catch(() => null),
-    sanityFetch<Announcement[]>(ACTIVE_ANNOUNCEMENTS_QUERY).catch(() => []),
-  ]);
+const VALUES = [
+  {
+    icon: "⚖️",
+    title: "Empowerment",
+    desc: "Supporting the growth and confidence of female law students and young legal professionals.",
+  },
+  {
+    icon: "🌍",
+    title: "Gender Equality & Justice",
+    desc: "Promoting fairness, women's rights, and equal opportunities in law and society.",
+  },
+  {
+    icon: "🤝",
+    title: "Inclusivity",
+    desc: "Building a welcoming platform that includes students, professionals, and community members of all backgrounds, including persons with disabilities.",
+  },
+  {
+    icon: "💡",
+    title: "Community Impact",
+    desc: "Contributing to society through women's rights awareness and legal outreach.",
+  },
+];
 
-  const aboutText = siteSettings?.aboutText ?? [];
-  const missionStatement =
-    siteSettings?.missionStatement ??
-    "Empowering women in law at Haramaya University";
+export default function AboutPage() {
+  const [activeValue, setActiveValue] = useState<number | null>(null);
 
   return (
-    <div className="bg-white dark:bg-navy min-h-screen">
+    <div className="page-bg min-h-screen">
 
-      {/* ── Page hero ──────────────────────────────────────────────────────── */}
-      <section
-        aria-labelledby="about-heading"
-        className="bg-navy dark:bg-navy-dark py-20 px-4 sm:px-6 lg:px-8 text-center"
-      >
+      {/* ── Hero ─────────────────────────────────────────────────────────── */}
+      <section style={{ backgroundColor: "#0A1628" }} className="py-20 px-4 sm:px-6 lg:px-8 text-center">
         <ScrollReveal>
-          <span className="inline-block w-12 h-1 bg-gold rounded mb-6" aria-hidden="true" />
-          <h1
-            id="about-heading"
-            className="font-serif text-4xl sm:text-5xl font-bold text-white mb-4"
-          >
+          <div className="w-12 h-1 rounded mb-6 mx-auto" style={{ backgroundColor: "#C9A84C" }} />
+          <h1 style={{ color: "#ffffff", fontFamily: "var(--font-playfair, Georgia, serif)" }}
+            className="text-4xl sm:text-5xl font-bold mb-4">
             About FLSLPN
           </h1>
-          <p className="font-sans text-lg text-white/70 max-w-2xl mx-auto">
+          <p style={{ color: "rgba(255,255,255,0.7)" }} className="text-lg max-w-2xl mx-auto">
             Female Law Students &amp; Legal Professionals Network
           </p>
         </ScrollReveal>
       </section>
 
-      {/* ── Mission statement pull-quote ───────────────────────────────────── */}
-      <section
-        aria-label="Mission statement"
-        className="py-14 px-4 sm:px-6 lg:px-8 bg-gold/10 dark:bg-gold/5 border-y border-gold/20"
-      >
-        <div className="max-w-3xl mx-auto text-center">
+      {/* ── Our Story ────────────────────────────────────────────────────── */}
+      <section className="py-16 px-4 sm:px-6 lg:px-8 card-bg">
+        <div className="max-w-4xl mx-auto">
           <ScrollReveal>
-            <blockquote className="font-serif text-2xl sm:text-3xl font-semibold text-navy dark:text-white leading-snug">
-              <span className="text-gold text-5xl leading-none mr-1" aria-hidden="true">&ldquo;</span>
-              {missionStatement}
-              <span className="text-gold text-5xl leading-none ml-1" aria-hidden="true">&rdquo;</span>
-            </blockquote>
+            <div className="flex items-center gap-4 mb-8">
+              <div className="w-8 h-1 rounded" style={{ backgroundColor: "#C9A84C" }} />
+              <h2 className="text-3xl font-bold text-main" style={{ fontFamily: "var(--font-playfair, Georgia, serif)" }}>
+                Our Story
+              </h2>
+            </div>
+          </ScrollReveal>
+
+          <ScrollReveal delay={0.1}>
+            <div className="space-y-5 text-lg leading-relaxed text-sub">
+              <p>
+                The Female Law Students in the Legal Professional Network – Haramaya University Chapter was established in <strong className="text-main">October 2021</strong> by <strong className="text-main">Ms. Zebiba Musema</strong> with the support of Ms. Urji Biso, Dr. Richard Wentzell, and Haramaya University College of Law.
+              </p>
+              <p>
+                The network is a <strong className="text-main">student-led initiative</strong> that empowers female law students and young legal professionals through mentorship, leadership, advocacy, and professional development.
+              </p>
+              <p>
+                In <strong className="text-main">2025</strong>, the network was relaunched with new impact-driven activities to strengthen community engagement and women's empowerment in the legal field.
+              </p>
+            </div>
           </ScrollReveal>
         </div>
       </section>
 
-      {/* ── About text (rich text) ─────────────────────────────────────────── */}
-      {aboutText.length > 0 && (
-        <section
-          aria-labelledby="about-text-heading"
-          className="py-16 px-4 sm:px-6 lg:px-8"
-        >
-          <div className="max-w-3xl mx-auto">
-            <ScrollReveal>
-              <h2
-                id="about-text-heading"
-                className="font-serif text-2xl sm:text-3xl font-bold text-navy dark:text-white mb-8"
-              >
-                Our Story
-              </h2>
-            </ScrollReveal>
-            <ScrollReveal delay={0.1}>
-              <PortableTextRenderer value={aboutText} />
-            </ScrollReveal>
-          </div>
-        </section>
-      )}
+      {/* ── Mission & Vision ─────────────────────────────────────────────── */}
+      <section className="py-16 px-4 sm:px-6 lg:px-8 alt-bg">
+        <div className="max-w-5xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-10">
 
-      {/* ── Announcements ─────────────────────────────────────────────────── */}
-      {announcements.length > 0 && (
-        <section
-          aria-labelledby="announcements-heading"
-          className="py-16 px-4 sm:px-6 lg:px-8 bg-gray-50 dark:bg-navy-dark"
-        >
-          <div className="max-w-3xl mx-auto">
-            <ScrollReveal>
-              <span className="inline-block w-12 h-1 bg-gold rounded mb-4" aria-hidden="true" />
-              <h2
-                id="announcements-heading"
-                className="font-serif text-2xl sm:text-3xl font-bold text-navy dark:text-white mb-10"
-              >
-                Announcements
-              </h2>
-            </ScrollReveal>
-
-            <div className="flex flex-col gap-8">
-              {announcements.map((announcement, i) => (
-                <ScrollReveal key={announcement._id} delay={i * 0.08}>
-                  <article className="bg-white dark:bg-navy rounded-2xl p-6 shadow-sm border border-gold/10">
-                    <header className="mb-4">
-                      <h3 className="font-serif text-xl font-bold text-navy dark:text-white mb-1">
-                        {announcement.title}
-                      </h3>
-                      {announcement.publishedAt && (
-                        <time
-                          dateTime={announcement.publishedAt}
-                          className="text-xs font-semibold uppercase tracking-widest text-gold"
-                        >
-                          {formatDate(announcement.publishedAt)}
-                        </time>
-                      )}
-                    </header>
-                    {announcement.body?.length > 0 && (
-                      <PortableTextRenderer value={announcement.body} />
-                    )}
-                  </article>
-                </ScrollReveal>
-              ))}
+          {/* Mission */}
+          <ScrollReveal>
+            <div className="card-bg rounded-3xl p-8 border border-sub transition-all duration-300 hover:shadow-2xl hover:-translate-y-1"
+              style={{ boxShadow: "0 4px 20px rgba(10,22,40,0.08)" }}>
+              <div className="text-4xl mb-4">🎯</div>
+              <h3 className="text-2xl font-bold mb-4 text-main" style={{ fontFamily: "var(--font-playfair, Georgia, serif)" }}>
+                Our Mission
+              </h3>
+              <p className="text-base leading-relaxed text-sub">
+                {MISSION}
+              </p>
             </div>
+          </ScrollReveal>
+
+          {/* Vision */}
+          <ScrollReveal delay={0.1}>
+            <div className="card-bg rounded-3xl p-8 border border-sub transition-all duration-300 hover:shadow-2xl hover:-translate-y-1"
+              style={{ boxShadow: "0 4px 20px rgba(10,22,40,0.08)" }}>
+              <div className="text-4xl mb-4">🌟</div>
+              <h3 className="text-2xl font-bold mb-4 text-main" style={{ fontFamily: "var(--font-playfair, Georgia, serif)" }}>
+                Our Vision
+              </h3>
+              <p className="text-base leading-relaxed text-sub">
+                {VISION}
+              </p>
+            </div>
+          </ScrollReveal>
+
+        </div>
+      </section>
+
+      {/* ── Goals ────────────────────────────────────────────────────────── */}
+      <section className="py-16 px-4 sm:px-6 lg:px-8 card-bg">
+        <div className="max-w-4xl mx-auto">
+          <ScrollReveal>
+            <div className="flex items-center gap-4 mb-10">
+              <div className="w-8 h-1 rounded" style={{ backgroundColor: "#C9A84C" }} />
+              <h2 className="text-3xl font-bold text-main" style={{ fontFamily: "var(--font-playfair, Georgia, serif)" }}>
+                Our Goals
+              </h2>
+            </div>
+          </ScrollReveal>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+            {GOALS.map((goal, i) => (
+              <ScrollReveal key={i} delay={i * 0.08}>
+                <div className="flex gap-4 p-5 rounded-2xl border border-sub transition-all duration-300 hover:shadow-lg hover:-translate-y-1"
+                  style={{ backgroundColor: "var(--bg-section-alt)" }}>
+                  <div className="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold"
+                    style={{ backgroundColor: "#C9A84C", color: "#0A1628" }}>
+                    {i + 1}
+                  </div>
+                  <p className="text-base leading-relaxed text-sub flex-1">{goal}</p>
+                </div>
+              </ScrollReveal>
+            ))}
           </div>
-        </section>
-      )}
+        </div>
+      </section>
+
+      {/* ── Core Values — interactive ────────────────────────────────────── */}
+      <section className="py-16 px-4 sm:px-6 lg:px-8 alt-bg">
+        <div className="max-w-5xl mx-auto">
+          <ScrollReveal>
+            <div className="text-center mb-12">
+              <div className="w-12 h-1 rounded mb-5 mx-auto" style={{ backgroundColor: "#C9A84C" }} />
+              <h2 className="text-3xl font-bold text-main" style={{ fontFamily: "var(--font-playfair, Georgia, serif)" }}>
+                Our Core Values
+              </h2>
+              <p className="text-dim text-sm mt-3">Tap any value to learn more</p>
+            </div>
+          </ScrollReveal>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+            {VALUES.map((val, i) => (
+              <ScrollReveal key={val.title} delay={i * 0.1}>
+                <button
+                  type="button"
+                  onClick={() => setActiveValue(activeValue === i ? null : i)}
+                  className="w-full text-left rounded-2xl p-6 transition-all duration-300 cursor-pointer"
+                  style={{
+                    backgroundColor: activeValue === i ? "#0A1628" : "var(--bg-card)",
+                    border: `2px solid ${activeValue === i ? "#C9A84C" : "var(--border-subtle)"}`,
+                    boxShadow: activeValue === i ? "0 12px 40px rgba(10,22,40,0.2)" : "0 2px 8px rgba(10,22,40,0.06)",
+                    transform: activeValue === i ? "translateY(-6px) scale(1.02)" : "translateY(0)",
+                  }}
+                >
+                  <div className="text-3xl mb-3">{val.icon}</div>
+                  <h3 className="font-bold text-lg mb-2 transition-colors duration-200"
+                    style={{
+                      color: activeValue === i ? "#C9A84C" : "var(--text-primary)",
+                      fontFamily: "var(--font-playfair, Georgia, serif)"
+                    }}>
+                    {val.title}
+                  </h3>
+                  <p className="text-sm leading-relaxed transition-colors duration-200"
+                    style={{ color: activeValue === i ? "rgba(255,255,255,0.85)" : "var(--text-secondary)" }}>
+                    {val.desc}
+                  </p>
+                </button>
+              </ScrollReveal>
+            ))}
+          </div>
+        </div>
+      </section>
 
     </div>
   );
