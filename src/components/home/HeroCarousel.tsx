@@ -74,14 +74,14 @@ export function HeroCarousel({ slides, missionStatement, organizationName }: Her
               src={urlFor(currentSlide.asset).width(1920).height(1080).format("webp").quality(85).url()}
               alt={currentSlide.alt || `${organizationName} hero image ${activeIndex + 1}`}
               fill priority={activeIndex === 0}
-              className="object-cover object-center brightness-50"
+              className="object-cover object-center brightness-75"
               sizes="100vw"
               onError={() => setFailedImages(prev => new Set(prev).add(currentSlide._key))}
             />
           )}
           {/* Left dark gradient for text readability */}
           <div className="absolute inset-0" style={{
-            background: "linear-gradient(to right, rgba(10,22,40,0.92) 0%, rgba(10,22,40,0.7) 45%, rgba(10,22,40,0.2) 100%)"
+            background: "linear-gradient(to right, rgba(10,22,40,0.82) 0%, rgba(10,22,40,0.55) 45%, rgba(10,22,40,0.1) 100%)"
           }} aria-hidden="true" />
         </motion.div>
       </AnimatePresence>
