@@ -2,16 +2,13 @@ import type { Metadata } from "next";
 import { ContactForm } from "@/components/forms/ContactForm";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
 
-// Static — no CMS data needed
 export const dynamic = "force-static";
 
 export const metadata: Metadata = {
   title: "Contact — FLSLPN",
-  description:
-    "Get in touch with the Female Law Students & Legal Professionals Network at Haramaya University.",
+  description: "Get in touch with the Female Law Students & Legal Professionals Network at Haramaya University.",
 };
 
-// Contact details
 const CONTACT_EMAIL = "hu.flslpn@gmail.com";
 const CONTACT_ADDRESS = "College of Law, Haramaya University, Haramaya, Ethiopia";
 
@@ -22,28 +19,17 @@ const SOCIAL_LINKS = [
   { label: "TikTok", href: "http://tiktok.com/@flsn_hu" },
 ];
 
-/**
- * Contact page — static page with contact info and ContactForm.
- * Requirements: 11.1, 11.2
- */
 export default function ContactPage() {
   return (
     <div className="page-bg min-h-screen">
 
-      {/* Page hero */}
-      <section
-        aria-labelledby="contact-heading"
-        className="bg-navy dark:bg-navy-dark py-20 px-4 sm:px-6 lg:px-8 text-center"
-      >
+      {/* Hero */}
+      <section style={{ backgroundColor: "#0A1628" }} className="py-20 px-4 sm:px-6 lg:px-8 text-center">
         <ScrollReveal>
-          <span className="inline-block w-12 h-1 bg-gold rounded mb-6" aria-hidden="true" />
-          <h1
-            id="contact-heading"
-            className="font-serif text-4xl sm:text-5xl font-bold text-white mb-4"
-          >
-            Contact Us
-          </h1>
-          <p className="font-sans text-lg text-white/70 max-w-xl mx-auto">
+          <div className="w-12 h-1 rounded mb-6 mx-auto" style={{ backgroundColor: "#C9A84C" }} />
+          <h1 style={{ color: "#ffffff", fontFamily: "var(--font-playfair, Georgia, serif)" }}
+            className="text-4xl sm:text-5xl font-bold mb-4">Contact Us</h1>
+          <p style={{ color: "rgba(255,255,255,0.7)" }} className="text-lg max-w-xl mx-auto">
             We&apos;d love to hear from you
           </p>
         </ScrollReveal>
@@ -56,55 +42,34 @@ export default function ContactPage() {
           {/* Contact info */}
           <div>
             <ScrollReveal>
-              <h2 className="font-serif text-2xl font-bold text-navy dark:text-white mb-8">
+              <h2 className="text-2xl font-bold mb-8"
+                style={{ color: "var(--text-primary)", fontFamily: "var(--font-playfair, Georgia, serif)" }}>
                 Get in Touch
               </h2>
 
-              {/* Email */}
               <div className="mb-6">
-                <p className="text-xs font-semibold uppercase tracking-widest text-gold mb-2">
-                  Email
-                </p>
-                <a
-                  href={`mailto:${CONTACT_EMAIL}`}
-                  className="font-sans text-base hover:opacity-70 transition-opacity duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold rounded break-all"
-                  style={{ color: "var(--text-primary)" }}
-                >
+                <p className="text-xs font-semibold uppercase tracking-widest mb-2" style={{ color: "#C9A84C" }}>Email</p>
+                <a href={`mailto:${CONTACT_EMAIL}`}
+                  className="text-base hover:opacity-70 transition-opacity break-all"
+                  style={{ color: "var(--text-primary)" }}>
                   {CONTACT_EMAIL}
                 </a>
               </div>
 
-              {/* Address */}
               <div className="mb-6">
-                <p className="text-xs font-semibold uppercase tracking-widest text-gold mb-2">
-                  Address
-                </p>
-                <address className="font-sans text-base not-italic leading-relaxed" style={{ color: "var(--text-secondary)" }}>
+                <p className="text-xs font-semibold uppercase tracking-widest mb-2" style={{ color: "#C9A84C" }}>Address</p>
+                <address className="text-base not-italic leading-relaxed" style={{ color: "var(--text-secondary)" }}>
                   {CONTACT_ADDRESS}
                 </address>
               </div>
 
-              {/* Social links */}
               <div>
-                <p className="text-xs font-semibold uppercase tracking-widest text-gold mb-3">
-                  Follow Us
-                </p>
-                <div className="flex items-center gap-4">
+                <p className="text-xs font-semibold uppercase tracking-widest mb-3" style={{ color: "#C9A84C" }}>Follow Us</p>
+                <div className="flex flex-wrap items-center gap-4">
                   {SOCIAL_LINKS.map(({ label, href }) => (
-                    <a
-                      key={label}
-                      href={href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      aria-label={`FLSLPN on ${label}`}
-                      className="
-                        font-sans text-sm font-medium
-                        text-navy/60 dark:text-white/60
-                        hover:text-gold dark:hover:text-gold
-                        transition-colors duration-150
-                        focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold rounded
-                      "
-                    >
+                    <a key={label} href={href} target="_blank" rel="noopener noreferrer"
+                      className="text-sm font-medium transition-colors duration-150 hover:opacity-70"
+                      style={{ color: "var(--text-secondary)" }}>
                       {label}
                     </a>
                   ))}
@@ -116,11 +81,12 @@ export default function ContactPage() {
           {/* Contact form */}
           <div>
             <ScrollReveal delay={0.1}>
-              <h2 className="font-serif text-2xl font-bold text-navy dark:text-white mb-2">
+              <h2 className="text-2xl font-bold mb-2"
+                style={{ color: "var(--text-primary)", fontFamily: "var(--font-playfair, Georgia, serif)" }}>
                 Send a Message
               </h2>
-              <p className="font-sans text-navy/60 dark:text-white/60 mb-8 text-sm">
-                Fields marked with <span className="text-red-500" aria-hidden="true">*</span> are required.
+              <p className="mb-8 text-sm" style={{ color: "var(--text-muted)" }}>
+                Fields marked with <span style={{ color: "#ef4444" }} aria-hidden="true">*</span> are required.
               </p>
               <ContactForm />
             </ScrollReveal>
@@ -128,7 +94,6 @@ export default function ContactPage() {
 
         </div>
       </section>
-
     </div>
   );
 }
